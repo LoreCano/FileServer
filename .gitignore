@@ -1,3 +1,5 @@
 node_modules/
 File Server/uploads/
 package-lock.json
+.env
+avvia-progetto.sh
