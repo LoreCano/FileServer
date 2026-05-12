@@ -4,12 +4,12 @@ const db = require('../db');
 const { UPLOAD_DIR } = require('../middleware/multerConfig');
 
 // ─────────────────────────────────────────────
-// GET /api/files?cartella_id=X
+// GET /api/files/:cartella_id
 // Lista i file dell'utente, opzionalmente filtrati per cartella
 // ─────────────────────────────────────────────
 const lista = async (req, res) => {
   const utenteId = req.utente.id;
-  const cartellaId = req.query.cartella_id || null;
+  const cartellaId = req.params.cartella_id || null;
 
   try {
     let query, params;
@@ -102,7 +102,7 @@ const upload = async (req, res) => {
 };
 
 // ─────────────────────────────────────────────
-// GET /api/files/download/:id
+// GET /api/files/:id/download
 // Scarica un file
 // ─────────────────────────────────────────────
 const download = async (req, res) => {
@@ -139,7 +139,7 @@ const download = async (req, res) => {
 
 // ─────────────────────────────────────────────
 // PATCH /api/files/:id/sposta
-// Body: { cartella_id } oppure { cartella_id: null } per spostare in root
+// Body: { cartella_id (opzionale)}  
 // ─────────────────────────────────────────────
 const sposta = async (req, res) => {
   const utenteId = req.utente.id;

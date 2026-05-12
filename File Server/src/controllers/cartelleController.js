@@ -53,7 +53,7 @@ const lista = async (req, res) => {
 // ─────────────────────────────────────────────
 const crea = async (req, res) => {
   const utenteId = req.utente.id;
-  const { nome, percorso_padre } = req.body;
+  const { nome, percorso_padre = null } = req.body;
   const percorsoPadre = normalizzaPercorso(percorso_padre);
   if (!nome || nome.trim() === '') {
     return res.status(400).json({ errore: 'Il nome della cartella è obbligatorio' });

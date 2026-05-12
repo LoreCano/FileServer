@@ -89,10 +89,13 @@ const Auth = {
 
 const Files = {
 
-  // GET /api/files?cartella_id=X — lista file
+  // GET /api/files:cartellaId — lista file
   async lista(cartellaId = null) {
-    const params = cartellaId ? `?cartella_id=${cartellaId}` : '';
-    return apiFetch(`${FILE_URL}/api/files${params}`, {
+    const url = cartellaId
+      ? `${FILE_URL}/api/files/${cartellaId}`
+      : `${FILE_URL}/api/files`;
+
+    return apiFetch(url, {
       headers: authHeaders()
     });
   },
@@ -118,10 +121,10 @@ const Files = {
     return dati;
   },
 
-  // GET /api/files/download/:id — scarica un file
+  // GET /api/files/:id/download/ — scarica un file
   // Apre il download direttamente nel browser
   async download(id, nomeFile) {
-    const risposta = await fetch(`${FILE_URL}/api/files/download/${id}`, {
+    const risposta = await fetch(`${FILE_URL}/api/files/${id}/download/`, {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     });
 

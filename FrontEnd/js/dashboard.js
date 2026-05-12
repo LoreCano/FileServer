@@ -195,7 +195,6 @@ function renderGrid(cartelle, files) {
       <div class="card-meta">${formatBytes(f.dimensione)}</div>
       <div class="card-actions">
         <div class="card-action-btn" title="Scarica" onclick="scaricaFile(${f.id}, '${jsString(f.nome_originale)}', event)">↓</div>
-        <div class="card-action-btn" title="Sposta" onclick="apriModalSposta(${f.id}, event)">→</div>
         <div class="card-action-btn danger" title="Elimina" onclick="eliminaFile(${f.id}, event)">✕</div>
       </div>
     </div>
@@ -210,6 +209,11 @@ function navigaRoot() {
   stato.cartellaCorrente = null;
   stato.percorsoCorrente = '/';
   document.getElementById('section-title').textContent = 'I miei file';
+  
+  // Highlight home in sidebar
+  const homeBtn = document.getElementById('sidebar-home-btn');
+  if (homeBtn) homeBtn.classList.add('active');
+  
   renderSidebarCartelle();
   aggiornaBreadcrumb();
   caricaFile();
@@ -222,6 +226,11 @@ function navigaCartella(id) {
   stato.cartellaCorrente = cartella.id;
   stato.percorsoCorrente = cartella.percorso;
   document.getElementById('section-title').textContent = cartella.nome;
+  
+  // Remove active from home in sidebar
+  const homeBtn = document.getElementById('sidebar-home-btn');
+  if (homeBtn) homeBtn.classList.remove('active');
+  
   renderSidebarCartelle();
   aggiornaBreadcrumb();
   caricaFile();
@@ -256,9 +265,15 @@ function aggiornaBreadcrumb() {
       html += `<span class="breadcrumb-sep">/</span>`;
 
       if (ultimo || !cartella) {
-        html += `<span>${escapeHtml(segmento)}</span>`;
+        html += `<span class="drop-root" 
+                       ondragover="${!ultimo && cartella ? 'dragOverDestinazione(event)' : ''}" 
+                       ondragleave="${!ultimo && cartella ? 'dragLeaveDestinazione(event)' : ''}" 
+                       ondrop="${!ultimo && cartella ? `dropSuCartella(event, ${cartella.id})` : ''}">${escapeHtml(segmento)}</span>`;
       } else {
-        html += `<span style="cursor:pointer" onclick="navigaCartella(${cartella.id})">${escapeHtml(segmento)}</span>`;
+        html += `<span class="drop-root" style="cursor:pointer" onclick="navigaCartella(${cartella.id})"
+                       ondragover="dragOverDestinazione(event)"
+                       ondragleave="dragLeaveDestinazione(event)"
+                       ondrop="dropSuCartella(event, ${cartella.id})">${escapeHtml(segmento)}</span>`;
       }
     });
   }
@@ -422,18 +437,6 @@ function apriModalUpload() {
   document.getElementById('modal-upload').classList.add('open');
 }
 
-function apriModalSposta(fileId, event) {
-  event.stopPropagation();
-  stato.fileDaSpostare = fileId;
-
-  const sel = document.getElementById('select-cartella-dest');
-  sel.innerHTML = '<option value="">— Root (nessuna cartella) —</option>';
-  stato.tutteLeCartelle.forEach(c => {
-    sel.innerHTML += `<option value="${c.id}">${escapeHtml(c.percorso)}</option>`;
-  });
-
-  document.getElementById('modal-sposta').classList.add('open');
-}
 
 function chiudiModal(id) {
   document.getElementById(id).classList.remove('open');

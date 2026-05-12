@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FileVault — Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:       #0a0a0f;
-      --surface:  #111118;
-      --surface2: #18181f;
-      --border:   rgba(255,255,255,0.07);
-      --border-h: rgba(255,255,255,0.15);
-      --text:     #e8e6e0;
-      --muted:    #6b6a66;
-      --accent:   #c8a96e;
-      --accent-d: #9a7c45;
-      --error:    #e05c5c;
-      --success:  #5cb88a;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html, body {
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface2: #18181f;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-h: rgba(255, 255, 255, 0.15);
+      --text: #e8e6e0;
+      --muted: #6b6a66;
+      --accent: #c8a96e;
+      --accent-d: #9a7c45;
+      --error: #e05c5c;
+      --success: #5cb88a;
+    }
+
+    html,
+    body {
       height: 100%;
       background: var(--bg);
       color: var(--text);
@@ -32,7 +42,11 @@
     }
 
     /* ── Layout ── */
-    .app { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    .app {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
 
     /* ── Sidebar ── */
     .sidebar {
@@ -41,7 +55,9 @@
       display: flex;
       flex-direction: column;
       padding: 1.5rem 0;
-      position: sticky; top: 0; height: 100vh;
+      position: sticky;
+      top: 0;
+      height: 100vh;
     }
 
     .sidebar-logo {
@@ -76,11 +92,24 @@
       text-align: left;
     }
 
-    .sidebar-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-    .sidebar-item.active { color: var(--accent); background: rgba(200,169,110,0.06); }
+    .sidebar-item:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
+    }
 
-    .sidebar-item svg { flex-shrink: 0; opacity: 0.7; }
-    .sidebar-item.active svg { opacity: 1; }
+    .sidebar-item.active {
+      color: var(--accent);
+      background: rgba(200, 169, 110, 0.06);
+    }
+
+    .sidebar-item svg {
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .sidebar-item.active svg {
+      opacity: 1;
+    }
 
     .sidebar-bottom {
       margin-top: auto;
@@ -96,17 +125,29 @@
     }
 
     .avatar {
-      width: 32px; height: 32px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: rgba(200,169,110,0.15);
-      border: 1px solid rgba(200,169,110,0.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; font-weight: 500; color: var(--accent);
+      background: rgba(200, 169, 110, 0.15);
+      border: 1px solid rgba(200, 169, 110, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
       flex-shrink: 0;
     }
 
-    .user-name { font-size: 0.85rem; color: var(--text); }
-    .user-email { font-size: 0.75rem; color: var(--muted); }
+    .user-name {
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    .user-email {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
 
     .btn-logout {
       width: 100%;
@@ -120,10 +161,18 @@
       transition: all 0.15s;
       font-family: 'DM Sans', sans-serif;
     }
-    .btn-logout:hover { border-color: var(--error); color: var(--error); }
+
+    .btn-logout:hover {
+      border-color: var(--error);
+      color: var(--error);
+    }
 
     /* ── Main Content ── */
-    .main { display: flex; flex-direction: column; overflow: hidden; }
+    .main {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
     .topbar {
       display: flex;
@@ -142,13 +191,23 @@
       color: var(--muted);
     }
 
-    .breadcrumb span { color: var(--text); }
-    .breadcrumb-sep { opacity: 0.4; }
+    .breadcrumb span {
+      color: var(--text);
+    }
 
-    .topbar-actions { display: flex; gap: 0.75rem; }
+    .breadcrumb-sep {
+      opacity: 0.4;
+    }
+
+    .topbar-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
 
     .btn {
-      display: flex; align-items: center; gap: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       padding: 0.55rem 1rem;
       border-radius: 7px;
       font-size: 0.85rem;
@@ -159,17 +218,29 @@
       background: none;
       color: var(--muted);
     }
-    .btn:hover { color: var(--text); border-color: var(--border-h); }
+
+    .btn:hover {
+      color: var(--text);
+      border-color: var(--border-h);
+    }
+
     .btn.primary {
       background: var(--accent);
       color: #0a0a0f;
       border-color: transparent;
       font-weight: 500;
     }
-    .btn.primary:hover { background: #d4b87a; }
+
+    .btn.primary:hover {
+      background: #d4b87a;
+    }
 
     /* ── File Explorer ── */
-    .explorer { flex: 1; padding: 2rem; overflow-y: auto; }
+    .explorer {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
 
     .explorer-header {
       display: flex;
@@ -210,12 +281,12 @@
     .folder-card.dragging,
     .file-draggable.dragging {
       opacity: 0.55;
-      border-color: rgba(200,169,110,0.55);
+      border-color: rgba(200, 169, 110, 0.55);
     }
 
     .drop-target {
       border-color: var(--accent) !important;
-      background: rgba(200,169,110,0.09) !important;
+      background: rgba(200, 169, 110, 0.09) !important;
     }
 
     .drop-root {
@@ -249,26 +320,40 @@
 
     .file-card .card-actions {
       position: absolute;
-      top: 0.5rem; right: 0.5rem;
+      top: 0.5rem;
+      right: 0.5rem;
       display: none;
       gap: 0.25rem;
     }
 
-    .file-card:hover .card-actions { display: flex; }
+    .file-card:hover .card-actions {
+      display: flex;
+    }
 
     .card-action-btn {
-      width: 28px; height: 28px;
+      width: 28px;
+      height: 28px;
       border-radius: 6px;
       background: var(--surface2);
       border: 1px solid var(--border);
       color: var(--muted);
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
       font-size: 0.8rem;
       transition: all 0.15s;
     }
-    .card-action-btn:hover { color: var(--text); border-color: var(--border-h); }
-    .card-action-btn.danger:hover { color: var(--error); border-color: rgba(224,92,92,0.4); }
+
+    .card-action-btn:hover {
+      color: var(--text);
+      border-color: var(--border-h);
+    }
+
+    .card-action-btn.danger:hover {
+      color: var(--error);
+      border-color: rgba(224, 92, 92, 0.4);
+    }
 
     .empty-state {
       grid-column: 1 / -1;
@@ -277,8 +362,15 @@
       color: var(--muted);
     }
 
-    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
-    .empty-state p { font-size: 0.9rem; }
+    .empty-state .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.4;
+    }
+
+    .empty-state p {
+      font-size: 0.9rem;
+    }
 
     /* Loading spinner */
     .loading-state {
@@ -289,27 +381,39 @@
     }
 
     .spinner-lg {
-      width: 32px; height: 32px;
+      width: 32px;
+      height: 32px;
       border: 2px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
     /* ── Modal ── */
     .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(10,10,15,0.8);
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 15, 0.8);
       backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 100;
-      opacity: 0; pointer-events: none;
+      opacity: 0;
+      pointer-events: none;
       transition: opacity 0.2s;
     }
 
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
 
     .modal {
       background: var(--surface);
@@ -322,7 +426,9 @@
       transition: transform 0.2s;
     }
 
-    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-overlay.open .modal {
+      transform: translateY(0);
+    }
 
     .modal-title {
       font-family: 'DM Serif Display', serif;
@@ -330,9 +436,22 @@
       margin-bottom: 1.5rem;
     }
 
-    .modal-field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem; }
-    .modal-field label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-    .modal-field input, .modal-field select {
+    .modal-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-field label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .modal-field input,
+    .modal-field select {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -343,9 +462,18 @@
       outline: none;
       transition: border-color 0.2s;
     }
-    .modal-field input:focus, .modal-field select:focus { border-color: var(--border-h); }
 
-    .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; }
+    .modal-field input:focus,
+    .modal-field select:focus {
+      border-color: var(--border-h);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+    }
 
     /* Upload zone */
     .upload-zone {
@@ -358,21 +486,39 @@
       margin-bottom: 1.25rem;
     }
 
-    .upload-zone:hover, .upload-zone.drag-over {
+    .upload-zone:hover,
+    .upload-zone.drag-over {
       border-color: var(--accent);
-      background: rgba(200,169,110,0.04);
+      background: rgba(200, 169, 110, 0.04);
     }
 
-    .upload-zone .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5; }
-    .upload-zone p { font-size: 0.85rem; color: var(--muted); }
-    .upload-zone strong { color: var(--accent); }
-    #file-input { display: none; }
+    .upload-zone .upload-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.5;
+    }
+
+    .upload-zone p {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .upload-zone strong {
+      color: var(--accent);
+    }
+
+    #file-input {
+      display: none;
+    }
 
     /* Toast notifiche */
     .toast-container {
       position: fixed;
-      bottom: 1.5rem; right: 1.5rem;
-      display: flex; flex-direction: column; gap: 0.5rem;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
       z-index: 200;
     }
 
@@ -383,164 +529,179 @@
       padding: 0.75rem 1.25rem;
       font-size: 0.85rem;
       color: var(--text);
-      display: flex; align-items: center; gap: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       animation: slideIn 0.2s ease;
       max-width: 300px;
     }
 
-    .toast.success { border-color: rgba(92,184,138,0.3); }
-    .toast.error   { border-color: rgba(224,92,92,0.3); }
+    .toast.success {
+      border-color: rgba(92, 184, 138, 0.3);
+    }
+
+    .toast.error {
+      border-color: rgba(224, 92, 92, 0.3);
+    }
 
     @keyframes slideIn {
-      from { transform: translateX(20px); opacity: 0; }
-      to   { transform: translateX(0);    opacity: 1; }
+      from {
+        transform: translateX(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
 
     /* Responsivo */
     @media (max-width: 768px) {
-      .app { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .explorer { padding: 1rem; }
-      .topbar { padding: 1rem; }
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .explorer {
+        padding: 1rem;
+      }
+
+      .topbar {
+        padding: 1rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="app">
+  <div class="app">
 
-  <!-- ── Sidebar ── -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">FileVault</div>
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">FileVault</div>
 
-    <div class="sidebar-section">Navigazione</div>
+      <div class="sidebar-section">Navigazione</div>
 
-    <button class="sidebar-item active" onclick="navigaRoot()">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-      Home
-    </button>
-
-    <div class="sidebar-section" style="margin-top: 0.5rem">Le mie cartelle</div>
-    <div id="sidebar-cartelle">
-      <!-- popolato da JS -->
-    </div>
-
-    <div class="sidebar-bottom">
-      <div class="user-info">
-        <div class="avatar" id="user-avatar">?</div>
-        <div>
-          <div class="user-name" id="user-name-display">—</div>
-          <div class="user-email" id="user-email-display">—</div>
-        </div>
-      </div>
-      <button class="btn-logout" onclick="logout()">Esci</button>
-    </div>
-  </aside>
-
-  <!-- ── Main ── -->
-  <main class="main">
-
-    <!-- Topbar -->
-    <div class="topbar">
-      <div class="breadcrumb" id="breadcrumb">
-        <span class="drop-root" onclick="navigaRoot()"
+      <button class="sidebar-item active" id="sidebar-home-btn" onclick="navigaRoot()"
               ondragover="dragOverDestinazione(event)"
               ondragleave="dragLeaveDestinazione(event)"
-              ondrop="dropSuRoot(event)">Home</span>
-      </div>
-      <div class="topbar-actions">
-        <button class="btn" onclick="apriModalCartella()">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
-          </svg>
-          Nuova cartella
-        </button>
-        <button class="btn primary" onclick="apriModalUpload()">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
-            <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/>
-          </svg>
-          Carica file
-        </button>
-      </div>
-    </div>
-
-    <!-- Explorer -->
-    <div class="explorer">
-      <div class="explorer-header">
-        <h2 class="section-heading" id="section-title">I miei file</h2>
-      </div>
-
-      <div class="file-grid" id="file-grid">
-        <div class="loading-state"><div class="spinner-lg"></div></div>
-      </div>
-    </div>
-
-  </main>
-</div>
-
-<!-- ── Modal Nuova Cartella ── -->
-<div class="modal-overlay" id="modal-cartella">
-  <div class="modal">
-    <div class="modal-title">Nuova cartella</div>
-    <div class="modal-field">
-      <label>Nome cartella</label>
-      <input type="text" id="input-nome-cartella" placeholder="Es. Documenti">
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="chiudiModal('modal-cartella')">Annulla</button>
-      <button class="btn primary" onclick="creaCartella()">Crea</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── Modal Upload ── -->
-<div class="modal-overlay" id="modal-upload">
-  <div class="modal">
-    <div class="modal-title">Carica file</div>
-    <div class="upload-zone" id="upload-zone"
-      onclick="document.getElementById('file-input').click()"
-      ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
-      <div class="upload-icon">⬆</div>
-      <p><strong>Clicca</strong> o trascina qui il file</p>
-      <p style="margin-top: 0.25rem; font-size: 0.78rem;">Max 50MB — PDF, immagini, documenti, zip</p>
-    </div>
-    <input type="file" id="file-input" onchange="fileSelezionato(event)">
-    <div id="file-selezionato" style="display:none; background: rgba(200,169,110,0.08); border:1px solid rgba(200,169,110,0.2); border-radius:8px; padding: 0.75rem 1rem; font-size:0.85rem; margin-bottom:1rem;">
-      <strong id="file-nome"></strong> — <span id="file-dim" style="color:var(--muted)"></span>
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="chiudiModal('modal-upload')">Annulla</button>
-      <button class="btn primary" onclick="uploadFile()" id="btn-upload" disabled>
-        <span>Carica</span>
+              ondrop="dropSuRoot(event)">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        Home
       </button>
+
+      <div class="sidebar-section" style="margin-top: 0.5rem">Le mie cartelle</div>
+      <div id="sidebar-cartelle">
+        <!-- popolato da JS -->
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="user-info">
+          <div class="avatar" id="user-avatar">?</div>
+          <div>
+            <div class="user-name" id="user-name-display">—</div>
+            <div class="user-email" id="user-email-display">—</div>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()">Esci</button>
+      </div>
+    </aside>
+
+    <!-- ── Main ── -->
+    <main class="main">
+
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="breadcrumb" id="breadcrumb">
+          <span class="drop-root" onclick="navigaRoot()" ondragover="dragOverDestinazione(event)"
+            ondragleave="dragLeaveDestinazione(event)" ondrop="dropSuRoot(event)">Home</span>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn" onclick="apriModalCartella()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
+            </svg>
+            Nuova cartella
+          </button>
+          <button class="btn primary" onclick="apriModalUpload()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <polyline points="16 16 12 12 8 16" />
+              <line x1="12" y1="12" x2="12" y2="21" />
+              <path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3" />
+            </svg>
+            Carica file
+          </button>
+        </div>
+      </div>
+
+      <!-- Explorer -->
+      <div class="explorer">
+        <div class="explorer-header">
+          <h2 class="section-heading" id="section-title">I miei file</h2>
+        </div>
+
+        <div class="file-grid" id="file-grid">
+          <div class="loading-state">
+            <div class="spinner-lg"></div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Modal Nuova Cartella ── -->
+  <div class="modal-overlay" id="modal-cartella">
+    <div class="modal">
+      <div class="modal-title">Nuova cartella</div>
+      <div class="modal-field">
+        <label>Nome cartella</label>
+        <input type="text" id="input-nome-cartella" placeholder="Es. Documenti">
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="chiudiModal('modal-cartella')">Annulla</button>
+        <button class="btn primary" onclick="creaCartella()">Crea</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ── Modal Sposta ── -->
-<div class="modal-overlay" id="modal-sposta">
-  <div class="modal">
-    <div class="modal-title">Sposta file</div>
-    <div class="modal-field">
-      <label>Destinazione</label>
-      <select id="select-cartella-dest">
-        <option value="">— Root (nessuna cartella) —</option>
-      </select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="chiudiModal('modal-sposta')">Annulla</button>
-      <button class="btn primary" onclick="spostaFileConferma()">Sposta</button>
+  <!-- ── Modal Upload ── -->
+  <div class="modal-overlay" id="modal-upload">
+    <div class="modal">
+      <div class="modal-title">Carica file</div>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()"
+        ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+        <div class="upload-icon">⬆</div>
+        <p><strong>Clicca</strong> o trascina qui il file</p>
+        <p style="margin-top: 0.25rem; font-size: 0.78rem;">Max 50MB — PDF, immagini, documenti, zip</p>
+      </div>
+      <input type="file" id="file-input" onchange="fileSelezionato(event)">
+      <div id="file-selezionato"
+        style="display:none; background: rgba(200,169,110,0.08); border:1px solid rgba(200,169,110,0.2); border-radius:8px; padding: 0.75rem 1rem; font-size:0.85rem; margin-bottom:1rem;">
+        <strong id="file-nome"></strong> — <span id="file-dim" style="color:var(--muted)"></span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="chiudiModal('modal-upload')">Annulla</button>
+        <button class="btn primary" onclick="uploadFile()" id="btn-upload" disabled>
+          <span>Carica</span>
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Toast container -->
-<div class="toast-container" id="toast-container"></div>
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container"></div>
 
-<script src="js/api.js"></script>
-<script src="js/dashboard.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
+
 </html>
