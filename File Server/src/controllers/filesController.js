@@ -4,7 +4,7 @@ const db = require('../db');
 const { UPLOAD_DIR } = require('../middleware/multerConfig');
 
 // ─────────────────────────────────────────────
-// GET /api/files/:cartella_id
+// GET /api/files/:cartella_id?
 // Lista i file dell'utente, opzionalmente filtrati per cartella
 // ─────────────────────────────────────────────
 const lista = async (req, res) => {

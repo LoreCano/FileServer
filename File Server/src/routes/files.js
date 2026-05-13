@@ -7,10 +7,9 @@ const { upload } = require('../middleware/multerConfig');
 // Tutte le route qui sotto richiedono autenticazione
 // authMiddleware viene eseguito prima di ogni controller
 
-// GET  /api/files  → lista file
-router.get('/', authMiddleware, filesController.lista);
-// GET  /api/files/:cartella_id  → lista file
-router.get('/:cartella_id', authMiddleware, filesController.lista);
+
+// GET  /api/files/:cartella_id?  → lista file in una cartella(se non specificato mostra i file nella root)
+router.get('/:cartella_id?', authMiddleware, filesController.lista);
 
 // POST /api/files/upload  → carica un file
 router.post('/upload', authMiddleware, upload.single('file'), filesController.upload);
