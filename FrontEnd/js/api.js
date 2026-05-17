@@ -27,6 +27,13 @@ function authHeaders() {
 // Wrapper generico per fetch — gestisce errori in modo uniforme
 async function apiFetch(url, options = {}) {
   const risposta = await fetch(url, options);
+
+  // Se il token è scaduto o non valido (401 Unauthorized o 403 Forbidden)
+  if (risposta.status === 401 || risposta.status === 403) {
+    Auth.logout();
+    throw new Error('Sessione scaduta');
+  }
+
   const dati = await risposta.json();
 
   // Se il server risponde con errore, lancia un'eccezione
@@ -101,24 +108,43 @@ const Files = {
   },
 
   // POST /api/files/upload — carica un file
-  // Nota: per upload usiamo FormData, non JSON
+  // Nota: per upload inviamo JSON con il file in base64
   async upload(file, cartellaId = null) {
-    const form = new FormData();
-    form.append('file', file);
-    if (cartellaId) form.append('cartella_id', cartellaId);
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64Data = reader.result;
+        try {
+          const risposta = await fetch(`${FILE_URL}/api/files/upload`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${getToken()}`
+            },
+            body: JSON.stringify({
+              fileBase64: base64Data,
+              nome_originale: file.name,
+              mimetype: file.type,
+              dimensione: file.size,
+              cartella_id: cartellaId || null
+            })
+          });
 
-    const risposta = await fetch(`${FILE_URL}/api/files/upload`, {
-      method: 'POST',
-      headers: {
-        // NON mettere Content-Type con FormData — il browser lo imposta da solo
-        'Authorization': `Bearer ${getToken()}`
-      },
-      body: form
+          if (risposta.status === 401 || risposta.status === 403) {
+            Auth.logout();
+            throw new Error('Sessione scaduta');
+          }
+
+          const dati = await risposta.json();
+          if (!risposta.ok) throw new Error(dati.errore || 'Upload fallito');
+          resolve(dati);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = error => reject(error);
+      reader.readAsDataURL(file);
     });
-
-    const dati = await risposta.json();
-    if (!risposta.ok) throw new Error(dati.errore || 'Upload fallito');
-    return dati;
   },
 
   // GET /api/files/:id/download/ — scarica un file
@@ -127,6 +153,11 @@ const Files = {
     const risposta = await fetch(`${FILE_URL}/api/files/${id}/download/`, {
       headers: { 'Authorization': `Bearer ${getToken()}` }
     });
+
+    if (risposta.status === 401 || risposta.status === 403) {
+      Auth.logout();
+      throw new Error('Sessione scaduta');
+    }
 
     if (!risposta.ok) throw new Error('Download fallito');
 

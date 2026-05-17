@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const filesController = require('../controllers/filesController');
 const authMiddleware = require('../middleware/authMiddleware');
-const { upload } = require('../middleware/multerConfig');
-
 // Tutte le route qui sotto richiedono autenticazione
 // authMiddleware viene eseguito prima di ogni controller
 
@@ -12,7 +10,7 @@ const { upload } = require('../middleware/multerConfig');
 router.get('/:cartella_id?', authMiddleware, filesController.lista);
 
 // POST /api/files/upload  → carica un file
-router.post('/upload', authMiddleware, upload.single('file'), filesController.upload);
+router.post('/upload', authMiddleware, filesController.upload);
 
 // GET  /api/files/:id/download → scarica un file
 router.get('/:id/download', authMiddleware, filesController.download);

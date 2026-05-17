@@ -1,7 +1,14 @@
 const path = require('path');
 const fs = require('fs');
 const db = require('../db');
-const { UPLOAD_DIR } = require('../middleware/multerConfig');
+
+// Cartella dove vengono salvati fisicamente i file
+const UPLOAD_DIR = path.join(__dirname, '../../uploads');
+
+// Crea la cartella uploads se non esiste
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+}
 
 // ─────────────────────────────────────────────
 // GET /api/files/:cartella_id?
@@ -42,17 +49,18 @@ const lista = async (req, res) => {
 
 // ─────────────────────────────────────────────
 // POST /api/files/upload
-// Carica un file sul server
-// Il file arriva già salvato su disco da Multer (req.file)
+// Carica un file sul server tramite base64
 // ─────────────────────────────────────────────
 const upload = async (req, res) => {
-  // Se Multer non ha ricevuto nessun file
-  if (!req.file) {
+  const { fileBase64, nome_originale, mimetype, dimensione, cartella_id } = req.body;
+
+  // Se non c'è il file in base64
+  if (!fileBase64) {
     return res.status(400).json({ errore: 'Nessun file ricevuto' });
   }
 
   const utenteId = req.utente.id;
-  const cartellaId = req.body.cartella_id || null;
+  const cartellaId = cartella_id || null;
 
   // Verifica che la cartella esista e appartenga all'utente
   if (cartellaId) {
@@ -61,22 +69,38 @@ const upload = async (req, res) => {
       [cartellaId, utenteId]
     );
     if (cartelle.length === 0) {
-      // Elimina il file già salvato da Multer
-      fs.unlinkSync(req.file.path);
       return res.status(404).json({ errore: 'Cartella non trovata' });
     }
   }
 
+  let percorsoSalvataggio = null;
+
   try {
+    // Estrai la parte base64 vera e propria
+    let base64String = fileBase64;
+    const matches = fileBase64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    if (matches && matches.length === 3) {
+      base64String = matches[2];
+    } else if (fileBase64.includes('base64,')) {
+      base64String = fileBase64.split('base64,')[1];
+    }
+
+    const fileBuffer = Buffer.from(base64String, 'base64');
+    const nome_salvato = `${Date.now()}-${Math.round(Math.random() * 1e9)}-${nome_originale.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+    percorsoSalvataggio = path.join(UPLOAD_DIR, nome_salvato);
+
+    // Salva il file su disco
+    fs.writeFileSync(percorsoSalvataggio, fileBuffer);
+
     // Salva le info del file nel database
     const [risultato] = await db.query(
       `INSERT INTO files (nome_originale, nome_salvato, dimensione, mimetype, utente_id, cartella_id)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [
-        req.file.originalname,  // nome originale (es. "documento.pdf")
-        req.file.filename,      // nome univoco su disco (es. "1712345678-123456789.pdf")
-        req.file.size,
-        req.file.mimetype,
+        nome_originale,
+        nome_salvato,
+        dimensione,
+        mimetype,
         utenteId,
         cartellaId
       ]
@@ -86,16 +110,17 @@ const upload = async (req, res) => {
       messaggio: 'File caricato con successo',
       file: {
         id: risultato.insertId,
-        nome_originale: req.file.originalname,
-        dimensione: req.file.size,
-        mimetype: req.file.mimetype,
+        nome_originale: nome_originale,
+        dimensione: dimensione,
+        mimetype: mimetype,
         cartella_id: cartellaId,
       }
     });
 
   } catch (err) {
-    // Se c'è un errore nel DB, elimina il file salvato su disco
-    fs.unlinkSync(req.file.path);
+    if (percorsoSalvataggio && fs.existsSync(percorsoSalvataggio)) {
+      fs.unlinkSync(percorsoSalvataggio);
+    }
     console.error('Errore upload:', err);
     res.status(500).json({ errore: 'Errore interno del server' });
   }
