@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const https = require('https');
+const fs = require('fs');
 require('dotenv').config();
 
 const filesRoutes = require('./src/routes/files');
@@ -29,6 +31,11 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, () => {
-  console.log(`File Server pronto http://localhost:${PORT}`);
+const httpsOptions = {
+  key: fs.readFileSync(path.join(__dirname, 'server.key')),
+  cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
+};
+
+https.createServer(httpsOptions, app).listen(PORT, () => {
+  console.log(`File Server pronto https://localhost:${PORT}`);
 });
