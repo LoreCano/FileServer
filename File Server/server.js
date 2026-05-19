@@ -5,6 +5,9 @@ const https = require('https');
 const fs = require('fs');
 require('dotenv').config();
 
+// Ignora errori per certificati auto-firmati
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 const filesRoutes = require('./src/routes/files');
 const cartelleRoutes = require('./src/routes/cartelle');
 

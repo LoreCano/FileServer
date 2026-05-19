@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
+// Ignora errori per certificati auto-firmati
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 const authRoutes = require('./src/routes/auth');
 
 const app = express();
