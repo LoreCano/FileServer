@@ -105,7 +105,7 @@ const crea = async (req, res) => {
 };
 
 // ─────────────────────────────────────────────
-// PATCH /api/cartelle/:id/sposta
+// PUT /api/cartelle/:id/sposta
 // Body: { percorso_destinazione } oppure null per root
 // ─────────────────────────────────────────────
 const sposta = async (req, res) => {

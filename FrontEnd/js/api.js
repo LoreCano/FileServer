@@ -171,10 +171,10 @@ const Files = {
     URL.revokeObjectURL(url);
   },
 
-  // PATCH /api/files/:id/sposta — sposta file
+  // PUT /api/files/:id/sposta — sposta file
   async sposta(id, cartellaId) {
     return apiFetch(`${FILE_URL}/api/files/${id}/sposta`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: authHeaders(),
       body: JSON.stringify({ cartella_id: cartellaId || null })
     });
@@ -209,10 +209,10 @@ const Cartelle = {
     });
   },
 
-  // PATCH /api/cartelle/:id/sposta — sposta cartella
+  // PUT /api/cartelle/:id/sposta — sposta cartella
   async sposta(id, percorsoDestinazione = null) {
     return apiFetch(`${FILE_URL}/api/cartelle/${id}/sposta`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: authHeaders(),
       body: JSON.stringify({ percorso_destinazione: percorsoDestinazione || '/' })
     });

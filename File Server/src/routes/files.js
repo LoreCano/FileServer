@@ -15,8 +15,8 @@ router.post('/upload', authMiddleware, filesController.upload);
 // GET  /api/files/:id/download → scarica un file
 router.get('/:id/download', authMiddleware, filesController.download);
 
-// PATCH /api/files/:id/sposta → sposta file in un'altra cartella
-router.patch('/:id/sposta', authMiddleware, filesController.sposta);
+// PUT /api/files/:id/sposta → sposta file in un'altra cartella
+router.put('/:id/sposta', authMiddleware, filesController.sposta);
 
 // DELETE /api/files/:id      → elimina un file
 router.delete('/:id', authMiddleware, filesController.elimina);

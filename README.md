@@ -104,10 +104,11 @@ Tutte le route richiedono l'header: `Authorization: Bearer <token>`
 | `GET` | `/api/files/:cartella_id?` | Lista file  |
 | `POST` | `/api/files/upload` | Carica un file (FormData) |
 | `GET` | `/api/files/:id/download` | Scarica un file |
-| `PATCH` | `/api/files/:id/sposta` | Sposta file in altra cartella |
+| `PUT` | `/api/files/:id/sposta` | Sposta file in altra cartella |
 | `DELETE` | `/api/files/:id` | Elimina un file |
 | `GET` | `/api/cartelle` | Lista tutte le cartelle |
 | `POST` | `/api/cartelle` | Crea una cartella |
+| `PUT` | `/api/cartelle/:id/sposta` | Sposta cartella in altra cartella/root |
 | `DELETE` | `/api/cartelle/:id` | Elimina una cartella (solo se vuota) |
 
 ---

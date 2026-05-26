@@ -163,7 +163,7 @@ const download = async (req, res) => {
 };
 
 // ─────────────────────────────────────────────
-// PATCH /api/files/:id/sposta
+// PUT /api/files/:id/sposta
 // Body: { cartella_id (opzionale)}  
 // ─────────────────────────────────────────────
 const sposta = async (req, res) => {

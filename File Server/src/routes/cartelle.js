@@ -9,8 +9,8 @@ router.get('/', authMiddleware, cartelleController.lista);
 // POST   /api/cartelle        → crea una nuova cartella
 router.post('/', authMiddleware, cartelleController.crea);
 
-// PATCH  /api/cartelle/:id/sposta → sposta cartella in un'altra cartella/root
-router.patch('/:id/sposta', authMiddleware, cartelleController.sposta);
+// PUT  /api/cartelle/:id/sposta → sposta cartella in un'altra cartella/root
+router.put('/:id/sposta', authMiddleware, cartelleController.sposta);
 
 // DELETE /api/cartelle/:id    → elimina una cartella (solo se vuota)
 router.delete('/:id', authMiddleware, cartelleController.elimina);
