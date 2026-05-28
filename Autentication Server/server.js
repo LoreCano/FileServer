@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const https = require('https');
-const fs = require('fs');
+const http = require('http');
 const path = require('path');
 require('dotenv').config();
 
@@ -21,11 +20,8 @@ app.use('/api/auth', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-const httpsOptions = {
-  key: fs.readFileSync(path.join(__dirname, 'server.key')),
-  cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
-};
 
-https.createServer(httpsOptions, app).listen(PORT, () => {
-  console.log(`Auth Server in ascolto su https://localhost:${PORT}`);
+
+http.createServer(app).listen(PORT, () => {
+  console.log(`Auth Server in ascolto su http://localhost:${PORT}`);
 });

@@ -6,8 +6,8 @@
 // un URL devi modificarlo solo qui.
 // ─────────────────────────────────────────────────────────────
 
-const AUTH_URL = 'https://localhost:3000';   // auth-server
-const FILE_URL = 'https://localhost:4000';   // file-server
+const AUTH_URL = 'http://localhost:3000';   // auth-server
+const FILE_URL = 'http://localhost:4000';   // file-server
 
 // ── Helpers ──────────────────────────────────────────────────
 

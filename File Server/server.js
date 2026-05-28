@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const https = require('https');
-const fs = require('fs');
+const http = require('http');
+
 require('dotenv').config();
 
 // Ignora errori per certificati auto-firmati
@@ -34,11 +34,11 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 4000;
 
-const httpsOptions = {
-  key: fs.readFileSync(path.join(__dirname, 'server.key')),
-  cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
-};
 
-https.createServer(httpsOptions, app).listen(PORT, () => {
-  console.log(`File Server pronto https://localhost:${PORT}`);
+
+
+
+
+http.createServer(app).listen(PORT, () => {
+  console.log(`File Server pronto http://localhost:${PORT}`);
 });
